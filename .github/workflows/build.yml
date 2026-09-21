@@ -1,7 +1,6 @@
 name: Build Kernel
 
 on:
-  push:
   workflow_dispatch:
     inputs:
       tag:
@@ -17,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: recursive
@@ -38,20 +37,16 @@ jobs:
           fi
           echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
 
-          # Timestamp for release title (required on push events)
+          # Timestamp for the release body
           TIMESTAMP="$(date +'%Y-%m-%d %H:%M UTC')"
           echo "RELEASE_TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
-          if [ "${{ github.event_name }}" = "push" ]; then
-            echo "RELEASE_NAME=Kernel Release $TAG - $TIMESTAMP" >> $GITHUB_ENV
-          else
-            echo "RELEASE_NAME=Kernel Release $TAG" >> $GITHUB_ENV
-          fi
+          echo "RELEASE_NAME=Kernel Release $TAG" >> $GITHUB_ENV
           
-          # Run build script (produces Odin .tar + AnyKernel3 flashable .zip)
+          # Run build script (produces Odin .tar + boot.img .zip)
           bash build.sh
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Droidspaces-KSUN-Samsung-SM-F900F
           path: |
