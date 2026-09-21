@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 1
           submodules: recursive
@@ -46,7 +46,7 @@ jobs:
           bash build.sh
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: Droidspaces-KSUN-Samsung-SM-F900F
           path: |
