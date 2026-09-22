@@ -9,9 +9,6 @@ export KERNEL_ROOT="$(pwd)"
 export ARCH=arm64
 export KBUILD_BUILD_USER="@donnimsipa"
 
-# Pin KernelSU-Next reported tag (shallow clone safety)
-export KSU_VERSION_TAG_OVERRIDE="v3.2.0-legacy"
-
 mkdir -p "${KERNEL_ROOT}/out" "${KERNEL_ROOT}/build"
 
 # Export toolchain paths
