@@ -21,6 +21,13 @@ jobs:
           fetch-depth: 1
           submodules: recursive
 
+      - name: Full history for KernelSU-Next (correct version)
+        run: |
+          # Submodule is fetched shallow by actions/checkout, so KSU_VERSION
+          # (30000 + commit count + 200) and git tag would be wrong/missing.
+          git -C KernelSU-Next fetch --unshallow origin legacy || true
+          git -C KernelSU-Next fetch --tags origin || true
+
       - name: Install dependencies
         run: |
           sudo apt update
