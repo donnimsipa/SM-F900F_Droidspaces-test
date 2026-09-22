@@ -70,6 +70,14 @@ build_tar(){
     cd "${KERNEL_ROOT}"
 }
 
+build_zip(){
+    cd "${KERNEL_ROOT}/build"
+    zip -j9 "Droidspaces-KSUN-Samsung-SM-F900F.zip" boot.img && \
+        echo -e "\n[INFO]: ZIP BUILT SUCCESSFULLY..!\n"
+    cd "${KERNEL_ROOT}"
+}
+
 build_kernel && \
     build_boot && \
-    build_tar
+    build_tar && \
+    build_zip

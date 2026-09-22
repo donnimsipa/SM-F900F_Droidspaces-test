@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout source
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           fetch-depth: 1
           submodules: recursive
@@ -24,35 +24,42 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update
-          sudo apt install -y git device-tree-compiler lz4 xz-utils zlib1g-dev openjdk-17-jdk gcc g++ python2 p7zip-full android-sdk-libsparse-utils erofs-utils default-jdk gnupg libncurses5
+          sudo apt install -y git device-tree-compiler lz4 xz-utils zlib1g-dev openjdk-17-jdk gcc g++ python2 p7zip-full android-sdk-libsparse-utils erofs-utils default-jdk gnupg libncurses5 zip unzip
           sudo ln -sf /usr/bin/python2 /usr/bin/python
 
       - name: Build Kernel
         run: |
-          # Set random tag if not provided
+          # Set tag from manual input, otherwise timestamped auto tag
           if [ -z "${{ github.event.inputs.tag }}" ]; then
             TAG="v$(date +'%Y%m%d%H%M')"
           else
             TAG="${{ github.event.inputs.tag }}"
           fi
           echo "RELEASE_TAG=$TAG" >> $GITHUB_ENV
+
+          # Timestamp for the release body
+          TIMESTAMP="$(date +'%Y-%m-%d %H:%M UTC')"
+          echo "RELEASE_TIMESTAMP=$TIMESTAMP" >> $GITHUB_ENV
+          echo "RELEASE_NAME=Kernel Release $TAG" >> $GITHUB_ENV
           
-          # Run build script
+          # Run build script (produces Odin .tar + boot.img .zip)
           bash build.sh
 
       - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: Droidspaces-KSUN-Samsung-SM-F900F
-          path: build/Droidspaces-KSUN-Samsung-SM-F900F.tar
+          path: |
+            build/Droidspaces-KSUN-Samsung-SM-F900F.tar
+            build/Droidspaces-KSUN-Samsung-SM-F900F.zip
 
       - name: Create Release
         uses: ncipollo/release-action@v1
         with:
           tag: ${{ env.RELEASE_TAG }}
-          name: "Kernel Release ${{ env.RELEASE_TAG }}"
+          name: ${{ env.RELEASE_NAME }}
           draft: false
           prerelease: false
           token: ${{ secrets.GITHUB_TOKEN }}
-          artifacts: "build/Droidspaces-KSUN-Samsung-SM-F900F.tar"
-          body: "Automated build of Droidspaces-KSUN Kernel.\nCommit: ${{ github.sha }}"
+          artifacts: "build/Droidspaces-KSUN-Samsung-SM-F900F.tar,build/Droidspaces-KSUN-Samsung-SM-F900F.zip"
+          body: "Automated build of Droidspaces-KSUN Kernel.\nCommit: ${{ github.sha }}\nBuilt: ${{ env.RELEASE_TIMESTAMP }}"
