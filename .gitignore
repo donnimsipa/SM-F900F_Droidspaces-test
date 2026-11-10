@@ -1,0 +1,15 @@
+out/
+build/
+scripts/crypto/__pycache__/
+*.patch
+*.rej
+*.orig
+build/boot.img
+.config.old
+scripts/kconfig/.conf.*
+scripts/kconfig/conf
+scripts/kconfig/.zconf.tab.o.cmd
+scripts/kconfig/conf.o
+scripts/kconfig/zconf.lex.c
+scripts/kconfig/zconf.tab.c
+scripts/kconfig/zconf.tab.o
