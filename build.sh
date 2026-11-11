@@ -3,12 +3,16 @@
 echo -e "\n[INFO]: BUILD STARTED..!\n"
 
 #init submodules
-git submodule update --init --recursive || true
+git submodule update --init --recursive
 
 # Wire KernelSU-Next into drivers/kernelsu (expected by drivers/Kconfig:268)
-if [ -d "${KERNEL_ROOT}/KernelSU-Next/kernel" ] && [ ! -d "${KERNEL_ROOT}/drivers/kernelsu" ]; then
-    mkdir -p "${KERNEL_ROOT}/drivers"
-    cp -r "${KERNEL_ROOT}/KernelSU-Next/kernel" "${KERNEL_ROOT}/drivers/kernelsu"
+if [ ! -d "${KERNEL_ROOT}/drivers/kernelsu" ]; then
+    if [ -d "${KERNEL_ROOT}/KernelSU-Next/kernel" ]; then
+        mkdir -p "${KERNEL_ROOT}/drivers"
+        cp -r "${KERNEL_ROOT}/KernelSU-Next/kernel" "${KERNEL_ROOT}/drivers/kernelsu"
+    else
+        echo "[WARN]: KernelSU-Next submodule not found at KernelSU-Next/kernel; drivers/kernelsu will be missing"
+    fi
 fi
 
 export KERNEL_ROOT="$(pwd)"
