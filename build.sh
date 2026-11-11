@@ -55,7 +55,7 @@ build_kernel(){
     make "${BUILD_OPTIONS[@]}" winnerlte_eur_open_defconfig custom.config droidspaces.config
 
     # Resolve new symbols non-interactively (required in CI)
-    make "${BUILD_OPTIONS[@]}" olddefconfig
+    yes "" | make "${BUILD_OPTIONS[@]}" oldconfig
 
     # Configure the kernel (TUI) when not in GitHub Actions
     if [ -z "${GITHUB_ACTIONS}" ]; then
