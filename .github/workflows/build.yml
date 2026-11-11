@@ -1,5 +1,6 @@
 name: Build Kernel
 
+# Droidspaces kernel build — triggered manually via workflow_dispatch
 on:
   workflow_dispatch:
     inputs:
