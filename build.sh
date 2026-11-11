@@ -2,6 +2,10 @@
 
 echo -e "\n[INFO]: BUILD STARTED..!\n"
 
+export KERNEL_ROOT="$(pwd)"
+export ARCH=arm64
+export KBUILD_BUILD_USER="@donnimsipa"
+
 #init submodules
 git submodule update --init --recursive || true
 
@@ -19,10 +23,6 @@ if [ ! -d "${KERNEL_ROOT}/drivers/kernelsu" ]; then
         echo "[WARN]: KernelSU-Next not available; drivers/kernelsu will be missing"
     fi
 fi
-
-export KERNEL_ROOT="$(pwd)"
-export ARCH=arm64
-export KBUILD_BUILD_USER="@donnimsipa"
 
 mkdir -p "${KERNEL_ROOT}/out" "${KERNEL_ROOT}/build"
 
