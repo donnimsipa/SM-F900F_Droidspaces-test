@@ -55,7 +55,11 @@ build_kernel(){
     make "${BUILD_OPTIONS[@]}" winnerlte_eur_open_defconfig custom.config droidspaces.config
 
     # Resolve new symbols non-interactively (required in CI)
-    yes "" | make "${BUILD_OPTIONS[@]}" oldconfig
+    make "${BUILD_OPTIONS[@]}" olddefconfig
+    # Touch auto.conf so make doesn't re-run oldconfig when it sees
+    # newly-copied Kconfig files (e.g. drivers/kernelsu from KernelSU-Next)
+    sync
+    touch "${KERNEL_ROOT}/out/include/config/auto.conf"
 
     # Configure the kernel (TUI) when not in GitHub Actions
     if [ -z "${GITHUB_ACTIONS}" ]; then
