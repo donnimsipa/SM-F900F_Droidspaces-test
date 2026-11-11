@@ -5,6 +5,12 @@ echo -e "\n[INFO]: BUILD STARTED..!\n"
 #init submodules
 git submodule update --init --recursive || true
 
+# Wire KernelSU-Next into drivers/kernelsu (expected by drivers/Kconfig:268)
+if [ -d "${KERNEL_ROOT}/KernelSU-Next/kernel" ] && [ ! -d "${KERNEL_ROOT}/drivers/kernelsu" ]; then
+    mkdir -p "${KERNEL_ROOT}/drivers"
+    cp -r "${KERNEL_ROOT}/KernelSU-Next/kernel" "${KERNEL_ROOT}/drivers/kernelsu"
+fi
+
 export KERNEL_ROOT="$(pwd)"
 export ARCH=arm64
 export KBUILD_BUILD_USER="@donnimsipa"
