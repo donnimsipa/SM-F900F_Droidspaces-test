@@ -54,6 +54,9 @@ build_kernel(){
     # Make default configuration: base defconfig + custom.config + droidspaces.config
     make "${BUILD_OPTIONS[@]}" winnerlte_eur_open_defconfig custom.config droidspaces.config
 
+    # Resolve new symbols non-interactively (required in CI)
+    make "${BUILD_OPTIONS[@]}" olddefconfig
+
     # Configure the kernel (TUI) when not in GitHub Actions
     if [ -z "${GITHUB_ACTIONS}" ]; then
         make "${BUILD_OPTIONS[@]}" menuconfig
