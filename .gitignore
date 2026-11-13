@@ -13,3 +13,4 @@ scripts/kconfig/conf.o
 scripts/kconfig/zconf.lex.c
 scripts/kconfig/zconf.tab.c
 scripts/kconfig/zconf.tab.o
+.DS_Store
